@@ -38,11 +38,9 @@ jobs:
       - name: Upload GitHub Pages Artifact  
         uses: actions/upload-artifact@v4
         with:
-          name: github-pages-artifact  # Name of the artifact, should match what we use in deploy step
-          path: dist/  # Change this to build/ instead of dist/
+          name: github-pages  # Artifact name
+          path: dist/         # Output directory (use `build/` if that's where the build is)
 
       - name: Deploy to GitHub Pages  
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: github-pages-artifact  # This must match the artifact name used in the upload step

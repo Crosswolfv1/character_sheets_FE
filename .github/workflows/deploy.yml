@@ -9,9 +9,17 @@ on:
       - main  # Runs CI when PRs are opened or updated
 
 jobs:
-  build:
-    name: Build  
+  deploy:
+    name: Build & Deploy  
     runs-on: ubuntu-latest  
+
+    permissions:
+      pages: write     
+      id-token: write  
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout Repo  
@@ -27,23 +35,6 @@ jobs:
           npm ci
           npm run build
 
-  deploy:
-    name: Deploy Application  
-    needs: build  
-    if: github.event_name == 'push'  # Deploys only on push, not PRs
-
-    permissions:
-      pages: write     
-      id-token: write  
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo  
-        uses: actions/checkout@v4
-
-      - name: Create Node Environment  
-        uses: actions/setup-n
+      - name: Deploy to GitHub Pages  
+        id: deployment
+        uses: actions/deploy-pages@v2

@@ -27,14 +27,6 @@ jobs:
           npm ci
           npm run build
 
-      - name: Setup Pages  
-        uses: actions/configure-pages@v4
-
-      - name: Upload Pages Artifact  
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: dist/
-
   deploy:
     name: Deploy Application  
     needs: build  
@@ -50,6 +42,8 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages  
-        id: deployment
-        uses: actions/deploy-pages@v2
+      - name: Checkout Repo  
+        uses: actions/checkout@v4
+
+      - name: Create Node Environment  
+        uses: actions/setup-n

@@ -30,9 +30,10 @@ jobs:
         with: 
           node-version: 16.x
 
-      - name: Delete Old Artifacts (Optional)
+      - name: Clean and Rebuild
         run: |
-          rm -rf ./dist
+          rm -rf dist
+          npm run build
 
       - name: Install Packages and Build Application  
         run: |

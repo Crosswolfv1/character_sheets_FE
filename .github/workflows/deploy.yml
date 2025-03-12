@@ -54,6 +54,10 @@ jobs:
           name: github-pages
           path: dist/
 
+      - name: Ensure permissions for dist folder
+        run: |
+          chmod -R a+rX ./dist
+
       - name: Deploy to GitHub Pages  
         id: deployment
         uses: actions/deploy-pages@v4

@@ -1,4 +1,3 @@
-const { defineConfig } = require('@vue/cli-service')
-module.exports = defineConfig({
-  publicPath: '/character-sheets/'   
-})
+module.exports = {
+  publicPath: process.env.NODE_ENV === 'production' ? '/character_sheets_FE/' : '/'
+}

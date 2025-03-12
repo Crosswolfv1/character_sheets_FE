@@ -29,6 +29,10 @@ jobs:
         uses: actions/setup-node@v4
         with: 
           node-version: 16.x
+          
+      - name: Delete Old Artifacts (Optional)
+        run: |
+          rm -rf ./dist
 
       - name: Install Packages and Build Application  
         run: |
@@ -50,3 +54,7 @@ jobs:
       - name: Deploy to GitHub Pages  
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages
+        env:
+          ACTIONS_STEP_DEBUG: true 

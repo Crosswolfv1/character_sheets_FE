@@ -38,8 +38,14 @@ jobs:
       - name: Upload GitHub Pages Artifact  
         uses: actions/upload-artifact@v4
         with:
-          name: github-pages  # Artifact name
-          path: dist/         # Output directory (use `build/` if that's where the build is)
+          name: github-pages  
+          path: dist/         
+          
+      - name: Download GitHub Pages Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: dist/
 
       - name: Deploy to GitHub Pages  
         id: deployment

@@ -6,62 +6,29 @@ on:
       - main
   pull_request:
     branches:
-      - main  # Runs CI when PRs are opened or updated
+      - main 
 
 jobs:
-  deploy:
-    name: Build & Deploy  
-    runs-on: ubuntu-latest  
-
-    permissions:
-      pages: write     
-      id-token: write  
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo  
-        uses: actions/checkout@v4
-
-      - name: Create Node Environment  
-        uses: actions/setup-node@v4
-        with: 
-          node-version: 16.x
-
-      - name: Install Dependencies  
-        run: |
-          npm install  # This ensures all dependencies are installed, including vue-cli-service
-
-      - name: Clean and Rebuild
-        run: |
-          rm -rf dist
-          npm run build
-
-      - name: List Dist Contents
-        run: ls -lR dist/
-
-      - name: Upload GitHub Pages Artifact  
-        uses: actions/upload-artifact@v4
-        with:
-          name: github-pages  
-          path: dist/         
-          
-      - name: Download GitHub Pages Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-          path: dist/
-
-      - name: Ensure permissions for dist folder
-        run: |
-          chmod -R a+rX ./dist
-
-      - name: Deploy to GitHub Pages  
-        id: deployment
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: github-pages
-        env:
-          ACTIONS_STEP_DEBUG: true
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Install dependencies
+      run: npm install
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Check for hard links and symlinks
+      run: find . -type l
+    
+    - name: Check artifact size
+      run: du -sh ./dist
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist
